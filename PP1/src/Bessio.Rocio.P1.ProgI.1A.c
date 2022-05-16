@@ -15,6 +15,10 @@ y devuelva el valor del producto con un aumento del 5%. Realizar la llamada desd
 un carácter como segundo y otro carácter  como tercero,
  la misma deberá reemplazar cada ocurrencia del segundo parámetro por el tercero y
   devolver la cantidad de veces que se reemplazo ese carácter  en la cadena
+
+
+3. Dada la siguiente estructura generar una función que permita ordenar un array de dicha estructura por tipo.
+Ante igualdad de tipo deberá ordenarse por efectividad creciente. Hardcodear datos y mostrarlos desde el main.
  ============================================================================
  */
 
@@ -27,12 +31,34 @@ un carácter como segundo y otro carácter  como tercero,
 
 #include "utn.h"
 
+#define TAM 5
+
+typedef struct{
+	int id;
+	char nombre[220];
+	char tipo;
+	float efectividad;
+
+}eVacuna;
 int aplicarAumento(int numero,float* resultado);
 
 void reemplazarCaracteres(char string1[], char caracter1, char caracter2,int* cantidad);
 
+int ordenamientoVacuna(eVacuna array[],int tam);
+
+
+
 int main(void) {
 	setbuf(stdout,NULL);
+
+	eVacuna auxVacuna[TAM]={
+			{1000,"JUAN",'A',90.99},
+			{1001,"MARIA",'P',70.03},
+			{1002,"ESTELA",'S',02.05},
+			{1003,"RENATA",'S',20.30},
+			{1004,"PAULA",'S',15.00},
+	};
+
 
 	int numero = 100;
 	float resultadoAumento;
@@ -54,6 +80,21 @@ int main(void) {
 
 	reemplazarCaracteres(string,caracter1,caracter2,&cantidadVeces);
 	printf("\nCANTIDAD DE VECES QUE SE REEMPLAZO EL CARACTER A: %d ",cantidadVeces);
+
+	ordenamientoVacuna(auxVacuna, TAM);
+
+	printf("\n____________________________________________________________");
+	printf("\n                                                            |");
+	printf("\n             LISTA VACUNA                                   |\n");
+	printf("____________________________________________________________|\n");
+
+	for(int i= 0;i<TAM;i++)
+	{
+		printf("%4d %10s  %c   %.2f\n",auxVacuna[i].id,
+									auxVacuna[i].nombre,
+									auxVacuna[i].tipo,
+									auxVacuna[i].efectividad);
+	}
 
 	return EXIT_SUCCESS;
 }
@@ -96,4 +137,33 @@ void reemplazarCaracteres(char string1[], char caracter1, char caracter2,int* ca
 	}
 	*cantidad = contador;
 	printf("\nSTRING REEMPLAZADA: %s ",string1);
+
+
+
+}
+
+int ordenamientoVacuna(eVacuna array[],int tam)
+{
+	int todoOk = -1;
+
+	eVacuna aux;
+
+	if(array!=NULL && tam>0)
+	{
+		for(int i=0;i<tam;i++)
+		{
+			for(int j=i;j<tam;j++)
+			{
+				if((array[i].tipo>array[j].tipo) || (array[i].tipo==array[j].tipo && array[i].efectividad>array[j].efectividad) )
+				{
+					aux = array[i];
+					array[i] = array[j];
+					array[j] = aux;
+				}
+			}
+		}
+	}
+
+
+	return todoOk;
 }
